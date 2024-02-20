@@ -1,12 +1,14 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const { TodoModel } = require("./Todo");
-const { default: mongoose } = require("mongoose");
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import { TodoModel } from "./Todo";
+import mongoose from "mongoose";
+
+dotenv.config();
 
 const connectToDb = () => {
   mongoose
-    .connect(process.env.MONGO_URL)
+    .connect(process.env.MONGO_URL as string)
     .then((conn) => console.log("Connected to DB at", conn.connection.host))
     .catch((err) => console.log("An error occured in DB", err.message));
 };
@@ -31,7 +33,7 @@ app.post("/createTodo", async (req, res) => {
       message: "Created Todo successfully",
       data: createdTodo,
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(400).json({ message: error.message });
   }
 });
@@ -44,7 +46,7 @@ app.get("/gettodos", async (req, res) => {
       message: "Fetched Todos successfully",
       data: todos,
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(400).json({ message: error.message });
   }
 });
